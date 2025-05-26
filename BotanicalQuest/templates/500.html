@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Server Error - PlantFinder{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 offset-lg-2 text-center fade-in">
+        <div class="py-5">
+            <div class="mb-4">
+                <svg viewBox="0 0 200 200" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="90" fill="#E8F3E6"/>
+                    <path d="M60 100 L100 60 L140 100 L100 140 Z" fill="#2D5A27" opacity="0.8"/>
+                    <path d="M95 95 L95 115 L105 115 L105 95 Z" fill="#D4A373"/>
+                    <path d="M95 75 L95 85 L105 85 L105 75 Z" fill="#D4A373"/>
+                    <text x="100" y="170" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="#D4A373">500</text>
+                </svg>
+            </div>
+            
+            <h1 class="display-4">Server Error</h1>
+            <p class="lead mb-4">Something went wrong on our end. We're working to fix the issue.</p>
+            
+            <div class="mb-5">
+                <a href="{{ url_for('index') }}" class="btn btn-primary me-2">
+                    <i class="fas fa-home me-2"></i>Return Home
+                </a>
+                <button onclick="window.location.reload()" class="btn btn-outline-primary">
+                    <i class="fas fa-redo me-2"></i>Try Again
+                </button>
+            </div>
+            
+            <div class="card bg-secondary mt-4">
+                <div class="card-body">
+                    <h4 class="mb-3">We apologize for the inconvenience</h4>
+                    <p class="mb-0">Like plants after a drought, we'll bounce back stronger. Please try again later.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results - Botanique{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="text-center mb-4 fade-in">
+            <h1 class="display-4">Search <span class="text-primary">Results</span></h1>
+            <p class="lead">Plants matching: <strong>{{ query }}</strong></p>
+        </div>
+        
+        <div class="search-container fade-in">
+            <form method="POST" action="{{ url_for('search') }}" class="search-form">
+                {{ form.hidden_tag() }}
+                <input type="text" name="query" class="search-input" placeholder="Enter plant name (e.g., Oak, Maple, Rosa)" value="{{ query }}" required>
+                <button type="submit" class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        {% if plants %}
+            <div class="search-results fade-in">
+                <div class="row">
+                    {% for plant in plants %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card plant-card h-100">
+                            {% if plant.image_url %}
+                            <img src="{{ plant.image_url }}" class="card-img-top" alt="{{ plant.common_name }}">
+                            {% else %}
+                            <div class="card-img-top d-flex align-items-center justify-content-center bg-secondary" style="height: 200px;">
+                                <i class="fas fa-tree fa-3x text-primary"></i>
+                            </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ plant.common_name }}</h5>
+                                <p class="scientific-name">{{ plant.scientific_name }}</p>
+                                <p class="card-text">{{ plant.description|truncate(100) }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="{{ url_for('plant_details', plant_id=plant.id) }}" class="btn btn-primary btn-sm">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="no-results text-center fade-in">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h3>No plants found</h3>
+                <p>We couldn't find any plants matching "{{ query }}".</p>
+                <div class="mt-4">
+                    <a href="{{ url_for('search') }}" class="btn btn-outline-primary me-2">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Search
+                    </a>
+                    <a href="{{ url_for('questionnaire') }}" class="btn btn-primary">
+                        <i class="fas fa-search me-2"></i>Try Identifying by Characteristics
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

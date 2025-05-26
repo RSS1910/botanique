@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Save {{ plant.common_name }} - PlantFinder{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4 fade-in">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('plant_details', plant_id=plant.id) }}">{{ plant.common_name }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Save to Library</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 offset-lg-2 fade-in">
+        <div class="card">
+            <div class="card-header bg-primary text-white text-center">
+                <h2 class="mb-0">Save to Your Plant Library</h2>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-4 text-center mb-3 mb-md-0">
+                        {% if plant.image_url %}
+                            <img src="{{ plant.image_url }}" alt="{{ plant.common_name }}" class="img-fluid rounded" style="max-height: 200px;">
+                        {% else %}
+                            <div class="bg-light d-flex align-items-center justify-content-center rounded" style="height: 200px;">
+                                <i class="fas fa-tree fa-4x text-primary"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <h3>{{ plant.common_name }}</h3>
+                        <p class="scientific-name">{{ plant.scientific_name }}</p>
+                        <p>{{ plant.description|truncate(150) }}</p>
+                        <span class="badge bg-primary">
+                            {% if plant.plant_type == 'tree' %}
+                            <i class="fas fa-tree me-1"></i>
+                            {% elif plant.plant_type == 'shrub' %}
+                            <i class="fas fa-seedling me-1"></i>
+                            {% elif plant.plant_type == 'flower' %}
+                            <i class="fas fa-spa me-1"></i>
+                            {% else %}
+                            <i class="fas fa-leaf me-1"></i>
+                            {% endif %}
+                            {{ plant.plant_type|capitalize }}
+                        </span>
+                    </div>
+                </div>
+                
+                <form method="post" action="{{ url_for('save_plant', plant_id=plant.id) }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.nickname.label(class="form-label") }}
+                        {{ form.nickname(class="form-control", placeholder="Give this plant a personal nickname (optional)") }}
+                        <div class="form-text">E.g., "Backyard Oak" or "Kitchen Herb"</div>
+                        {% for error in form.nickname.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mb-4">
+                        {{ form.notes.label(class="form-label") }}
+                        {{ form.notes(class="form-control", rows=3, placeholder="Add personal notes about this plant (optional)") }}
+                        <div class="form-text">E.g., "Found near the lake" or "Need to plant in garden"</div>
+                        {% for error in form.notes.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                        <a href="{{ url_for('plant_details', plant_id=plant.id) }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Plant
+                        </a>
+                        
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

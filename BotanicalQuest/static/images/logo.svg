@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="240" fill="#E8F3E6"/>
+  
+  <!-- Leaf shapes -->
+  <path d="M256 90C180 90 120 150 120 256s80 146 136 146c0 0 0-56 0-146s-60-110 0-166z" fill="#2D5A27"/>
+  <path d="M256 90C332 90 392 150 392 256s-80 146-136 146c0 0 0-56 0-146s60-110 0-166z" fill="#2D5A27" opacity="0.8"/>
+  
+  <!-- Stem -->
+  <rect x="246" y="250" width="20" height="170" fill="#2D5A27"/>
+  
+  <!-- Text -->
+  <path d="M155 420c0-3.3 2.7-6 6-6h190c3.3 0 6 2.7 6 6v16c0 3.3-2.7 6-6 6H161c-3.3 0-6-2.7-6-6v-16z" fill="#D4A373"/>
+  
+  <!-- Circle Accent -->
+  <circle cx="356" cy="156" r="20" fill="#D4A373" opacity="0.8"/>
+</svg>

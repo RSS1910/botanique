@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block title %}Identify Plants - PlantFinder{% endblock %}
+
+{% block extra_css %}
+<style>
+    .question-section {
+        transition: all 0.3s ease;
+    }
+    .progress {
+        height: 10px;
+        margin-bottom: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4 text-center fade-in">
+        <h1>Plant Identification</h1>
+        <p class="lead">Answer questions about the plant to help us identify it</p>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-lg-8 offset-lg-2">
+        <div class="questionnaire-container fade-in">
+            <!-- Progress bar -->
+            <div class="progress mb-4">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            
+            <form id="questionnaire-form" method="post" action="{{ url_for('questionnaire') }}">
+                {{ form.hidden_tag() }}
+                
+                <!-- Basic Characteristics -->
+                <div class="question-section">
+                    <h3><i class="fas fa-ruler-vertical me-2 text-primary"></i>Size & Location</h3>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            {{ form.height_range.label(class="form-label") }}
+                            {{ form.height_range(class="form-select") }}
+                            <div class="form-text">How tall is the plant?</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            {{ form.geographic_location.label(class="form-label") }}
+                            {{ form.geographic_location(class="form-select") }}
+                            <div class="form-text">Where is the plant typically found?</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Flowers Characteristics -->
+                <div class="question-section">
+                    <h3><i class="fas fa-spa me-2 text-primary"></i>Flowers</h3>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            {{ form.has_flowers.label(class="form-label") }}
+                            {{ form.has_flowers(class="form-select") }}
+                            <div class="form-text">Does the plant produce flowers?</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3" id="flower_color_field">
+                            {{ form.flower_color.label(class="form-label") }}
+                            {{ form.flower_color(class="form-select") }}
+                            <div class="form-text">What is the predominant color of the flowers?</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Leaf Characteristics -->
+                <div class="question-section">
+                    <h3><i class="fas fa-leaf me-2 text-primary"></i>Leaves</h3>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            {{ form.leaf_shape.label(class="form-label") }}
+                            {{ form.leaf_shape(class="form-select") }}
+                            <div class="form-text">What shape are the leaves?</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            {{ form.leaf_arrangement.label(class="form-label") }}
+                            {{ form.leaf_arrangement(class="form-select") }}
+                            <div class="form-text">How are the leaves arranged on the stem?</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bark Characteristics (for trees) -->
+                <div class="question-section">
+                    <h3><i class="fas fa-tree me-2 text-primary"></i>Bark & Structure</h3>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            {{ form.bark_texture.label(class="form-label") }}
+                            {{ form.bark_texture(class="form-select") }}
+                            <div class="form-text">What is the texture of the bark? (For trees and woody plants)</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            {{ form.growth_pattern.label(class="form-label") }}
+                            {{ form.growth_pattern(class="form-select") }}
+                            <div class="form-text">How does the plant grow or spread?</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seasonal & Fruit Characteristics -->
+                <div class="question-section">
+                    <h3><i class="fas fa-sun me-2 text-primary"></i>Seasonal Traits</h3>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            {{ form.deciduous.label(class="form-label") }}
+                            {{ form.deciduous(class="form-select") }}
+                            <div class="form-text">Does the plant lose its leaves in the fall?</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3" id="fall_color_field">
+                            {{ form.has_fruit.label(class="form-label") }}
+                            {{ form.has_fruit(class="form-select") }}
+                            <div class="form-text">Does the plant produce visible fruits or seeds?</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3" id="fruit_type_field">
+                            {{ form.fruit_type.label(class="form-label") }}
+                            {{ form.fruit_type(class="form-select") }}
+                            <div class="form-text">What type of fruit or seed does it produce?</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            {{ form.sunlight_preference.label(class="form-label") }}
+                            {{ form.sunlight_preference(class="form-select") }}
+                            <div class="form-text">What are the light conditions where the plant is growing?</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    {{ form.submit(class="btn btn-primary btn-lg") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-5 fade-in">
+    <div class="col-lg-8 offset-lg-2">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title"><i class="fas fa-lightbulb me-2 text-accent"></i>Tips for Better Results</h3>
+                <ul class="card-text">
+                    <li>The more questions you answer, the more accurate the results will be.</li>
+                    <li>If you're not sure about an answer, it's better to leave it blank than to guess.</li>
+                    <li>Consider taking a photo of the plant for your reference.</li>
+                    <li>Look at the entire plant - leaves, flowers, fruits, and growth habit all provide valuable clues.</li>
+                    <li>Seasonal characteristics can be important - note when the plant flowers or produces fruit.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/questionnaire.js') }}"></script>
+{% endblock %}

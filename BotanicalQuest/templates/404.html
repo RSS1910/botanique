@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Not Found - PlantFinder{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 offset-lg-2 text-center fade-in">
+        <div class="py-5">
+            <div class="mb-4">
+                <svg viewBox="0 0 200 200" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="90" fill="#E8F3E6"/>
+                    <path d="M100 50C80 50 60 70 60 100s30 40 40 40v-90z" fill="#2D5A27"/>
+                    <path d="M100 50C120 50 140 70 140 100s-30 40-40 40v-90z" fill="#2D5A27" opacity="0.8"/>
+                    <text x="100" y="170" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="#D4A373">404</text>
+                </svg>
+            </div>
+            
+            <h1 class="display-4">Page Not Found</h1>
+            <p class="lead mb-4">The page you're looking for doesn't exist or has been moved.</p>
+            
+            <div class="mb-5">
+                <a href="{{ url_for('index') }}" class="btn btn-primary me-2">
+                    <i class="fas fa-home me-2"></i>Return Home
+                </a>
+                <a href="{{ url_for('questionnaire') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-search me-2"></i>Identify Plants
+                </a>
+            </div>
+            
+            <div class="card bg-secondary mt-4">
+                <div class="card-body">
+                    <h4 class="mb-3">Did you know?</h4>
+                    <p class="mb-0">Plants have been on Earth for more than 450 million years, adapting to countless environments over time.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Daily Feature - Admin{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 fade-in">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('admin_panel') }}">Admin Panel</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Daily Feature</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12 fade-in">
+        <h1>Manage Daily Feature</h1>
+        <p class="lead">Set today's featured plant for the homepage</p>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-lg-8 offset-lg-2 fade-in">
+        <div class="admin-form">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                The featured plant appears on the homepage. It's a great way to highlight interesting plants from your database.
+            </div>
+            
+            <form method="post" action="{{ url_for('admin_feature') }}">
+                {{ form.hidden_tag() }}
+                
+                <div class="mb-3">
+                    {{ form.plant_id.label(class="form-label") }}
+                    {{ form.plant_id(class="form-select") }}
+                    {% for error in form.plant_id.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.title.label(class="form-label") }}
+                    {{ form.title(class="form-control", placeholder="E.g., Featured Plant: Red Maple") }}
+                    {% for error in form.title.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-4">
+                    {{ form.description.label(class="form-label") }}
+                    {{ form.description(class="form-control", rows=4, placeholder="Write an engaging description about this plant...") }}
+                    {% for error in form.description.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                    <a href="{{ url_for('admin_panel') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Admin Panel
+                    </a>
+                    
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 offset-lg-2 fade-in">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h4><i class="fas fa-lightbulb me-2 text-primary"></i>Writing Tips</h4>
+                <p>To create an engaging feature:</p>
+                <ul>
+                    <li>Highlight what makes the plant unique or interesting</li>
+                    <li>Include practical information about growing conditions</li>
+                    <li>Mention any cultural or historical significance</li>
+                    <li>If seasonal, relate the plant to the current time of year</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-generate title when plant changes
+    const plantSelect = document.getElementById('plant_id');
+    const titleInput = document.getElementById('title');
+    
+    plantSelect.addEventListener('change', function() {
+        if (plantSelect.selectedIndex > 0) {
+            const plantName = plantSelect.options[plantSelect.selectedIndex].text;
+            titleInput.value = `Featured Plant: ${plantName}`;
+        }
+    });
+});
+</script>
+{% endblock %}

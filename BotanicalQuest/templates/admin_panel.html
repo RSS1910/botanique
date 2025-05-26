@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Panel - PlantFinder{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 fade-in">
+        <h1>Admin Panel</h1>
+        <p class="lead">Manage the plant database and application features</p>
+    </div>
+</div>
+
+<!-- Dashboard Statistics -->
+<div class="row mb-5">
+    <div class="col-12 fade-in">
+        <div class="card dashboard-stats">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 stat-item">
+                        <div class="stat-number">{{ plant_count }}</div>
+                        <div class="stat-label">Plants in Database</div>
+                    </div>
+                    <div class="col-md-6 stat-item">
+                        <div class="stat-number">{{ user_count }}</div>
+                        <div class="stat-label">Registered Users</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Admin Actions -->
+<div class="row">
+    <!-- Plant Management -->
+    <div class="col-md-6 mb-4 fade-in">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 class="card-title mb-0"><i class="fas fa-leaf me-2"></i>Plant Management</h3>
+            </div>
+            <div class="card-body">
+                <p>Add, edit, or remove plants from the database. Update plant characteristics and descriptions.</p>
+                <div class="list-group mb-3">
+                    <a href="{{ url_for('admin_plants') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        View All Plants
+                        <span class="badge bg-primary rounded-pill">{{ plant_count }}</span>
+                    </a>
+                    <a href="{{ url_for('admin_add_plant') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-plus me-2 text-success"></i>Add New Plant
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Daily Feature Management -->
+    <div class="col-md-6 mb-4 fade-in">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 class="card-title mb-0"><i class="fas fa-star me-2"></i>Daily Feature</h3>
+            </div>
+            <div class="card-body">
+                <p>Set the featured plant that appears on the homepage. This helps users discover interesting plants.</p>
+                <a href="{{ url_for('admin_feature') }}" class="btn btn-primary">
+                    <i class="fas fa-edit me-2"></i>Manage Featured Plant
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Future features section -->
+<div class="row mb-5">
+    <div class="col-12 fade-in">
+        <div class="card bg-secondary">
+            <div class="card-header">
+                <h3 class="card-title mb-0"><i class="fas fa-lightbulb me-2"></i>Development Roadmap</h3>
+            </div>
+            <div class="card-body">
+                <p>Future features that could be implemented:</p>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card bg-white">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-images me-2 text-primary"></i>Image Recognition</h5>
+                                <p class="card-text">Allow users to upload images of plants for identification.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card bg-white">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-map-marker-alt me-2 text-primary"></i>Location Tracking</h5>
+                                <p class="card-text">Enable users to mark where they discovered plants on a map.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card bg-white">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-users me-2 text-primary"></i>Community Features</h5>
+                                <p class="card-text">Allow users to share and discuss plant identifications.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

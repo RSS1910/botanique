@@ -1,0 +1,300 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ plant.common_name }} - PlantFinder{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4 fade-in">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ plant.common_name }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-lg-10 offset-lg-1">
+        <div class="plant-details fade-in">
+            <div class="plant-details-header">
+                <h1>{{ plant.common_name }}</h1>
+                <p class="scientific-name">{{ plant.scientific_name }}</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    {% if plant.image_url %}
+                    <img src="{{ plant.image_url }}" alt="{{ plant.common_name }}" class="plant-details-image">
+                    {% else %}
+                    <div class="plant-details-image bg-secondary d-flex align-items-center justify-content-center">
+                        <i class="fas fa-tree fa-4x text-primary"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <h3>Description</h3>
+                    <p>{{ plant.description }}</p>
+                    
+                    <h3>Plant Type</h3>
+                    <p>
+                        <span class="badge bg-primary">
+                            {% if plant.plant_type == 'tree' %}
+                            <i class="fas fa-tree me-1"></i>
+                            {% elif plant.plant_type == 'shrub' %}
+                            <i class="fas fa-seedling me-1"></i>
+                            {% elif plant.plant_type == 'flower' %}
+                            <i class="fas fa-spa me-1"></i>
+                            {% elif plant.plant_type == 'grass' %}
+                            <i class="fas fa-fan me-1"></i>
+                            {% elif plant.plant_type == 'fern' %}
+                            <i class="fas fa-leaf me-1"></i>
+                            {% elif plant.plant_type == 'succulent' %}
+                            <i class="fas fa-seedling me-1"></i>
+                            {% elif plant.plant_type == 'vine' %}
+                            <i class="fas fa-wind me-1"></i>
+                            {% elif plant.plant_type == 'herb' %}
+                            <i class="fas fa-mortar-pestle me-1"></i>
+                            {% else %}
+                            <i class="fas fa-seedling me-1"></i>
+                            {% endif %}
+                            {{ plant.plant_type|capitalize }}
+                        </span>
+                    </p>
+                    
+                    {% if current_user.is_authenticated %}
+                        <div class="mt-4">
+                            {% if saved %}
+                                <a href="{{ url_for('remove_plant', plant_id=plant.id) }}" class="btn btn-outline-primary" 
+                                   onclick="return confirm('Are you sure you want to remove this plant from your library?');">
+                                    <i class="fas fa-bookmark me-2"></i>Saved in Your Library
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('save_plant', plant_id=plant.id) }}" class="btn btn-primary">
+                                    <i class="fas fa-bookmark me-2"></i>Save to Your Library
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="mt-4">
+                            <a href="{{ url_for('login') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-sign-in-alt me-2"></i>Login to Save
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {% if plant.care_instructions %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3>Care Instructions</h3>
+                    <div class="card bg-secondary">
+                        <div class="card-body">
+                            <p class="mb-0">{{ plant.care_instructions }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if characteristic %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3>Plant Characteristics</h3>
+                    <div class="plant-details-characteristics">
+                        <div class="row">
+                            {% if characteristic.min_height and characteristic.max_height %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Height Range</div>
+                                    <div>{{ characteristic.min_height }} - {{ characteristic.max_height }} cm</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if characteristic.geographic_location %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Geographic Location</div>
+                                    <div>{{ characteristic.geographic_location }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Flowers</div>
+                                    <div>{{ 'Yes' if characteristic.has_flowers else 'No' }}</div>
+                                </div>
+                            </div>
+                            
+                            {% if characteristic.has_flowers and characteristic.flower_color %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Flower Color</div>
+                                    <div>{{ characteristic.flower_color }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if characteristic.has_flowers and characteristic.flowering_season %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Flowering Season</div>
+                                    <div>{{ characteristic.flowering_season }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if characteristic.leaf_shape %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Leaf Shape</div>
+                                    <div>{{ characteristic.leaf_shape }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if characteristic.leaf_arrangement %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Leaf Arrangement</div>
+                                    <div>{{ characteristic.leaf_arrangement }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if characteristic.leaf_color %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Leaf Color</div>
+                                    <div>{{ characteristic.leaf_color }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if characteristic.bark_texture and characteristic.bark_texture != 'na' %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Bark Texture</div>
+                                    <div>{{ characteristic.bark_texture }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Deciduous</div>
+                                    <div>{{ 'Yes' if characteristic.deciduous else 'No (Evergreen)' }}</div>
+                                </div>
+                            </div>
+                            
+                            {% if characteristic.deciduous and characteristic.fall_color %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Fall Color</div>
+                                    <div>{{ characteristic.fall_color }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Fruits</div>
+                                    <div>{{ 'Yes' if characteristic.has_fruit else 'No' }}</div>
+                                </div>
+                            </div>
+                            
+                            {% if characteristic.has_fruit and characteristic.fruit_type %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Fruit Type</div>
+                                    <div>{{ characteristic.fruit_type }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if characteristic.has_fruit and characteristic.fruit_color %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Fruit Color</div>
+                                    <div>{{ characteristic.fruit_color }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if characteristic.growth_pattern %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Growth Pattern</div>
+                                    <div>{{ characteristic.growth_pattern }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if characteristic.growth_rate %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Growth Rate</div>
+                                    <div>{{ characteristic.growth_rate }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if characteristic.sunlight_preference %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Sunlight Preference</div>
+                                    <div>{{ characteristic.sunlight_preference }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if characteristic.soil_preference %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Soil Preference</div>
+                                    <div>{{ characteristic.soil_preference }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if characteristic.moisture_preference %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Moisture Preference</div>
+                                    <div>{{ characteristic.moisture_preference }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if characteristic.hardiness_zone %}
+                            <div class="col-md-4 mb-3">
+                                <div class="characteristic-item">
+                                    <div class="characteristic-label">Hardiness Zone</div>
+                                    <div>{{ characteristic.hardiness_zone }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="row">
+                <div class="col-12 text-center">
+                    <a href="{{ url_for('questionnaire') }}" class="btn btn-outline-primary me-2">
+                        <i class="fas fa-search me-2"></i>Identify Another Plant
+                    </a>
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-home me-2"></i>Return Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,375 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Plant - Admin{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 fade-in">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('admin_panel') }}">Admin Panel</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('admin_plants') }}">Manage Plants</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Plant</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-8 fade-in">
+        <h1>Edit Plant: {{ plant.common_name }}</h1>
+        <p class="lead">Update plant information and characteristics</p>
+    </div>
+    <div class="col-md-4 text-md-end fade-in">
+        <a href="{{ url_for('plant_details', plant_id=plant.id) }}" class="btn btn-outline-primary" target="_blank">
+            <i class="fas fa-eye me-2"></i>View Plant
+        </a>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-lg-10 offset-lg-1 fade-in">
+        <div class="admin-form">
+            <form method="post" action="{{ url_for('admin_edit_plant', plant_id=plant.id) }}" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3 class="card-title mb-0">Basic Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.common_name.label(class="form-label") }}
+                                {{ form.common_name(class="form-control") }}
+                                {% for error in form.common_name.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.scientific_name.label(class="form-label") }}
+                                {{ form.scientific_name(class="form-control") }}
+                                {% for error in form.scientific_name.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.plant_type.label(class="form-label") }}
+                                {{ form.plant_type(class="form-select") }}
+                                {% for error in form.plant_type.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.image_url.label(class="form-label") }}
+                                {{ form.image_url(class="form-control") }}
+                                {% for error in form.image_url.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                                <div class="form-text">Enter a URL to an image of this plant.</div>
+                                
+                                <div class="mt-3">
+                                    {{ form.image_upload.label(class="form-label") }}
+                                    {{ form.image_upload(class="form-control") }}
+                                    {% for error in form.image_upload.errors %}
+                                        <div class="text-danger">{{ error }}</div>
+                                    {% endfor %}
+                                    <div class="form-text">Or upload a new image from your device (jpg, png, gif).</div>
+                                </div>
+                                
+                                {% if plant.image_url %}
+                                <div class="mt-3">
+                                    <p class="mb-2">Current image:</p>
+                                    <img src="{{ plant.image_url }}" alt="{{ plant.common_name }}" class="img-thumbnail" style="max-height: 150px;">
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.description.label(class="form-label") }}
+                            {{ form.description(class="form-control", rows=4) }}
+                            {% for error in form.description.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.care_instructions.label(class="form-label") }}
+                            {{ form.care_instructions(class="form-control", rows=3) }}
+                            {% for error in form.care_instructions.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3 class="card-title mb-0">Physical Characteristics</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.min_height.label(class="form-label") }}
+                                {{ form.min_height(class="form-control") }}
+                                <div class="form-text">Minimum height in centimeters</div>
+                                {% for error in form.min_height.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.max_height.label(class="form-label") }}
+                                {{ form.max_height(class="form-control") }}
+                                <div class="form-text">Maximum height in centimeters</div>
+                                {% for error in form.max_height.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.geographic_location.label(class="form-label") }}
+                                {{ form.geographic_location(class="form-control") }}
+                                {% for error in form.geographic_location.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.growth_rate.label(class="form-label") }}
+                                {{ form.growth_rate(class="form-select") }}
+                                {% for error in form.growth_rate.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.growth_pattern.label(class="form-label") }}
+                                {{ form.growth_pattern(class="form-control") }}
+                                {% for error in form.growth_pattern.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3 class="card-title mb-0">Leaf & Flower Characteristics</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-check mb-3">
+                                    {{ form.has_flowers(class="form-check-input") }}
+                                    {{ form.has_flowers.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check mb-3">
+                                    {{ form.deciduous(class="form-check-input") }}
+                                    {{ form.deciduous.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check mb-3">
+                                    {{ form.has_fruit(class="form-check-input") }}
+                                    {{ form.has_fruit.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.leaf_shape.label(class="form-label") }}
+                                {{ form.leaf_shape(class="form-control") }}
+                                {% for error in form.leaf_shape.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.leaf_arrangement.label(class="form-label") }}
+                                {{ form.leaf_arrangement(class="form-control") }}
+                                {% for error in form.leaf_arrangement.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.leaf_color.label(class="form-label") }}
+                                {{ form.leaf_color(class="form-control") }}
+                                {% for error in form.leaf_color.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.bark_texture.label(class="form-label") }}
+                                {{ form.bark_texture(class="form-control") }}
+                                <div class="form-text">For trees and woody plants</div>
+                                {% for error in form.bark_texture.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.flower_color.label(class="form-label") }}
+                                {{ form.flower_color(class="form-control") }}
+                                {% for error in form.flower_color.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.flowering_season.label(class="form-label") }}
+                                {{ form.flowering_season(class="form-control") }}
+                                {% for error in form.flowering_season.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.fall_color.label(class="form-label") }}
+                                {{ form.fall_color(class="form-control") }}
+                                <div class="form-text">For deciduous plants</div>
+                                {% for error in form.fall_color.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3 class="card-title mb-0">Fruit & Environmental Preferences</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.fruit_type.label(class="form-label") }}
+                                {{ form.fruit_type(class="form-control") }}
+                                {% for error in form.fruit_type.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.fruit_color.label(class="form-label") }}
+                                {{ form.fruit_color(class="form-control") }}
+                                {% for error in form.fruit_color.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.sunlight_preference.label(class="form-label") }}
+                                {{ form.sunlight_preference(class="form-control") }}
+                                {% for error in form.sunlight_preference.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.soil_preference.label(class="form-label") }}
+                                {{ form.soil_preference(class="form-control") }}
+                                {% for error in form.soil_preference.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.moisture_preference.label(class="form-label") }}
+                                {{ form.moisture_preference(class="form-control") }}
+                                {% for error in form.moisture_preference.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.hardiness_zone.label(class="form-label") }}
+                                {{ form.hardiness_zone(class="form-control") }}
+                                {% for error in form.hardiness_zone.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                    <a href="{{ url_for('admin_plants') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Cancel
+                    </a>
+                    {{ form.submit(class="btn btn-success") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Show/hide fields based on checkboxes
+    const hasFlowersCheckbox = document.getElementById('has_flowers');
+    const flowerColorField = document.querySelector('label[for="flower_color"]').parentNode;
+    const floweringSeasonField = document.querySelector('label[for="flowering_season"]').parentNode;
+    
+    const deciduousCheckbox = document.getElementById('deciduous');
+    const fallColorField = document.querySelector('label[for="fall_color"]').parentNode;
+    
+    const hasFruitCheckbox = document.getElementById('has_fruit');
+    const fruitTypeField = document.querySelector('label[for="fruit_type"]').parentNode;
+    const fruitColorField = document.querySelector('label[for="fruit_color"]').parentNode;
+    
+    function updateFieldVisibility() {
+        // Flower fields
+        if (hasFlowersCheckbox.checked) {
+            flowerColorField.classList.remove('d-none');
+            floweringSeasonField.classList.remove('d-none');
+        } else {
+            flowerColorField.classList.add('d-none');
+            floweringSeasonField.classList.add('d-none');
+        }
+        
+        // Fall color field
+        if (deciduousCheckbox.checked) {
+            fallColorField.classList.remove('d-none');
+        } else {
+            fallColorField.classList.add('d-none');
+        }
+        
+        // Fruit fields
+        if (hasFruitCheckbox.checked) {
+            fruitTypeField.classList.remove('d-none');
+            fruitColorField.classList.remove('d-none');
+        } else {
+            fruitTypeField.classList.add('d-none');
+            fruitColorField.classList.add('d-none');
+        }
+    }
+    
+    // Initial update
+    updateFieldVisibility();
+    
+    // Add event listeners
+    hasFlowersCheckbox.addEventListener('change', updateFieldVisibility);
+    deciduousCheckbox.addEventListener('change', updateFieldVisibility);
+    hasFruitCheckbox.addEventListener('change', updateFieldVisibility);
+});
+</script>
+{% endblock %}

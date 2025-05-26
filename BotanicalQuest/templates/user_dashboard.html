@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}My Plant Library - PlantFinder{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 fade-in">
+        <h1>My Plant Library</h1>
+        <p class="lead">View and manage your saved plants</p>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-12 fade-in">
+        <div class="card dashboard-stats">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 stat-item">
+                        <div class="stat-number">{{ saved_plants|length }}</div>
+                        <div class="stat-label">Plants in Your Library</div>
+                    </div>
+                    <div class="col-md-6 stat-item">
+                        <div class="stat-number">{{ current_user.created_at.strftime('%b %d, %Y') }}</div>
+                        <div class="stat-label">Member Since</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Saved Plants -->
+<div class="row mb-5">
+    <div class="col-12 mb-4 fade-in">
+        <h2><i class="fas fa-bookmark me-2 text-primary"></i>Your Saved Plants</h2>
+    </div>
+    
+    {% if saved_plants|length > 0 %}
+        {% for user_plant in saved_plants %}
+            <div class="col-md-6 col-lg-4 mb-4 fade-in">
+                <div class="card plant-card h-100">
+                    {% if user_plant.plant.image_url %}
+                        <img src="{{ user_plant.plant.image_url }}" class="card-img-top" alt="{{ user_plant.plant.common_name }}">
+                    {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <i class="fas fa-tree fa-3x text-primary"></i>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            {% if user_plant.nickname %}
+                                {{ user_plant.nickname }} 
+                                <small class="text-muted">({{ user_plant.plant.common_name }})</small>
+                            {% else %}
+                                {{ user_plant.plant.common_name }}
+                            {% endif %}
+                        </h5>
+                        <p class="scientific-name">{{ user_plant.plant.scientific_name }}</p>
+                        
+                        {% if user_plant.notes %}
+                            <div class="mt-3">
+                                <h6 class="text-primary">Your Notes:</h6>
+                                <p class="card-text">{{ user_plant.notes }}</p>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="text-muted mt-2">
+                            <small>Saved on {{ user_plant.saved_at.strftime('%b %d, %Y') }}</small>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer d-flex justify-content-between">
+                        <a href="{{ url_for('plant_details', plant_id=user_plant.plant.id) }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-info-circle me-1"></i>View Details
+                        </a>
+                        
+                        <form action="{{ url_for('remove_plant', plant_id=user_plant.plant.id) }}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-outline-danger btn-sm confirm-delete">
+                                <i class="fas fa-trash-alt me-1"></i>Remove
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12 fade-in">
+            <div class="card bg-light">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-seedling fa-4x text-primary mb-3"></i>
+                    <h3>Your plant library is empty</h3>
+                    <p class="mb-4">Start identifying plants and save them to your library.</p>
+                    <a href="{{ url_for('questionnaire') }}" class="btn btn-primary">
+                        <i class="fas fa-search me-2"></i>Identify Plants
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Identification History - this could be added in a future update -->
+<div class="row mb-5">
+    <div class="col-12 text-center fade-in">
+        <div class="card bg-secondary">
+            <div class="card-body py-4">
+                <h3 class="card-title"><i class="fas fa-lightbulb me-2 text-primary"></i>Did You Know?</h3>
+                <p class="card-text">Plants play a vital role in our ecosystem by producing oxygen, providing habitats for wildlife, and stabilizing soil.</p>
+                <a href="{{ url_for('questionnaire') }}" class="btn btn-primary">
+                    <i class="fas fa-search me-2"></i>Identify More Plants
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

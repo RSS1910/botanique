@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Plants - Botanique{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="text-center mb-5 fade-in">
+            <h1 class="display-4">Search <span class="text-primary">Plants</span></h1>
+            <p class="lead">Find plants by their common or scientific name</p>
+        </div>
+        
+        <div class="search-container fade-in">
+            <form method="POST" action="{{ url_for('search') }}" class="search-form">
+                {{ form.hidden_tag() }}
+                <input type="text" name="query" class="search-input" placeholder="Enter plant name (e.g., Oak, Maple, Rosa)" required>
+                <button type="submit" class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+        
+        <div class="text-center mt-5 fade-in">
+            <p>Can't find what you're looking for?</p>
+            <a href="{{ url_for('questionnaire') }}" class="btn btn-outline-primary">
+                <i class="fas fa-search me-2"></i>Try Identifying by Characteristics
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12 fade-in">
+        <h2 class="text-center mb-4">Popular Plants</h2>
+        <div class="row">
+            {% for plant in plants %}
+            <div class="col-md-4 mb-4">
+                <div class="card plant-card h-100">
+                    {% if plant.image_url %}
+                    <img src="{{ plant.image_url }}" class="card-img-top" alt="{{ plant.common_name }}">
+                    {% else %}
+                    <div class="card-img-top d-flex align-items-center justify-content-center bg-secondary" style="height: 200px;">
+                        <i class="fas fa-tree fa-3x text-primary"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ plant.common_name }}</h5>
+                        <p class="scientific-name">{{ plant.scientific_name }}</p>
+                        <p class="card-text">{{ plant.description|truncate(100) }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ url_for('plant_details', plant_id=plant.id) }}" class="btn btn-primary btn-sm">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
